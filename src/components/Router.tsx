@@ -9,18 +9,30 @@ import ProfilePage from "@/pages/profile";
 import LoginPage from "@/pages/login";
 import SignUpPage from "@/pages/sign-up";
 
-const Router: React.FC = () => {
+interface RouterProps {
+  isAutherticated: boolean;
+}
+
+const Router: React.FC<RouterProps> = ({ isAutherticated }) => {
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/posts" element={<PostListPage />} />
-      <Route path="/posts/:id" element={<PostDetailPage />} />
-      <Route path="/posts/new" element={<PostNewPage />} />
-      <Route path="/posts/edit/:id" element={<PostEditPage />} />
-      <Route path="/profile" element={<ProfilePage />} />
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/sign-up" element={<SignUpPage />} />
-      <Route path="*" element={<Navigate replace to="/" />} />
+      {isAutherticated ? (
+        <>
+          <Route path="/" element={<Home />} />
+          <Route path="/posts" element={<PostListPage />} />
+          <Route path="/posts/:id" element={<PostDetailPage />} />
+          <Route path="/posts/new" element={<PostNewPage />} />
+          <Route path="/posts/edit/:id" element={<PostEditPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="*" element={<Navigate replace to="/" />} />
+        </>
+      ) : (
+        <>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/sign-up" element={<SignUpPage />} />
+          <Route path="*" element={<LoginPage />} />
+        </>
+      )}
     </Routes>
   );
 };

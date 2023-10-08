@@ -1,7 +1,14 @@
+import Header from "@/components/Header";
+import SignUpForm from "@/components/SignUpForm";
 import React from "react";
 
 const SignUpPage: React.FC = () => {
-  return <div>SignUpPage</div>;
+  return (
+    <>
+      <Header />
+      <SignUpForm />
+    </>
+  );
 };
 
 export default SignUpPage;

@@ -1,6 +1,6 @@
 import React from "react";
 import Profile from "./PostProfile";
-import PostUtilsBox from "./PostUtilsBox";
+import PostUtilsBox from "./PostUtils";
 
 const PostDetail: React.FC = () => {
   return (
@@ -8,7 +8,7 @@ const PostDetail: React.FC = () => {
       <div className="post__box">
         <div className="post__title">asdasdasd</div>
         <Profile />
-        <PostUtilsBox />
+        <PostUtilsBox contentId="1" />
         <div className="post__text">asdasdasdasdasd</div>
       </div>
     </div>

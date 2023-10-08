@@ -1,19 +1,46 @@
-import React from "react";
+import React, { useState } from "react";
 import PostProfile from "./PostProfile";
-import PostUtilsBox from "./PostUtilsBox";
+import PostUtils from "./PostUtils";
 import { Link } from "react-router-dom";
 
 interface PostListProps {
   hasNavigation?: boolean;
 }
 
+enum TabType {
+  ALL = "all",
+  MY = "my",
+}
+
 const PostList: React.FC<PostListProps> = ({ hasNavigation = true }) => {
+  const [activeTab, setActiveTab] = useState(TabType.ALL);
+
+  const handleClickTab = (tab: TabType) => {
+    setActiveTab(tab);
+  };
+
   return (
     <>
       {hasNavigation && (
         <div className="post__navigation">
-          <div className="post__navigation--active">전체</div>
-          <div>나의 글</div>
+          <div
+            role="presentation"
+            className={
+              activeTab === TabType.ALL ? "post__navigation--active" : ""
+            }
+            onClick={() => handleClickTab(TabType.ALL)}
+          >
+            전체
+          </div>
+          <div
+            role="presentation"
+            onClick={() => handleClickTab(TabType.MY)}
+            className={
+              activeTab === TabType.MY ? "post__navigation--active" : ""
+            }
+          >
+            나의 글
+          </div>
         </div>
       )}
 
@@ -24,7 +51,7 @@ const PostList: React.FC<PostListProps> = ({ hasNavigation = true }) => {
               <PostProfile />
               <div className="post__title">게시글 {index}</div>
               <div className="post__text">text</div>
-              <PostUtilsBox />
+              <PostUtils contentId="1" />
             </Link>
           </div>
         ))}
