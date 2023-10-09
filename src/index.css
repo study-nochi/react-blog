@@ -180,6 +180,18 @@ footer a:hover {
   color: gray;
 }
 
+.post__no-post {
+  padding: 24px;
+  text-align: center;
+  color: gray;
+  border: 1px solid var(--smoke);
+  border-radius: 20px;
+}
+
+.post__text--pre-wrap {
+  white-space: pre-wrap;
+}
+
 /* profile */
 
 .profile__box {

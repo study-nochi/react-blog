@@ -1,11 +1,12 @@
+import { Post } from "@/types/post.type";
 import React from "react";
 
-const PostProfile: React.FC = () => {
+const PostProfile: React.FC<{ post: Post }> = ({ post }) => {
   return (
     <div className="post__profile-box">
       <div className="post__profile" />
-      <div className="post__author-name">Nochi</div>
-      <div className="post__date">2023.10.08 일요일</div>
+      <div className="post__author-name">{post.email}</div>
+      <div className="post__date">{post.createdAt}</div>
     </div>
   );
 };

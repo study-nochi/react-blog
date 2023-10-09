@@ -1,7 +1,12 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import PostProfile from "./PostProfile";
 import PostUtils from "./PostUtils";
 import { Link } from "react-router-dom";
+import { Post } from "@/types/post.type";
+import AuthContext from "@/context/AuthContext";
+import { getPostList } from "@/firebase/api";
+import { FirebaseError } from "firebase/app";
+import { toast } from "react-toastify";
 
 interface PostListProps {
   hasNavigation?: boolean;
@@ -14,10 +19,26 @@ enum TabType {
 
 const PostList: React.FC<PostListProps> = ({ hasNavigation = true }) => {
   const [activeTab, setActiveTab] = useState(TabType.ALL);
+  const [posts, setPosts] = useState<Post[]>([]);
+  const { user } = useContext(AuthContext);
 
   const handleClickTab = (tab: TabType) => {
     setActiveTab(tab);
   };
+
+  const mutate = () => {
+    getPostList()
+      .then((newPosts) => {
+        setPosts(newPosts);
+      })
+      .catch((error: FirebaseError) => {
+        toast.error(error.message);
+      });
+  };
+
+  useEffect(() => {
+    mutate();
+  }, []);
 
   return (
     <>
@@ -45,16 +66,22 @@ const PostList: React.FC<PostListProps> = ({ hasNavigation = true }) => {
       )}
 
       <section className="post__list">
-        {[...Array(10)].map((e, index) => (
-          <div key={index} className="post__box">
-            <Link to={`/posts/${index}`}>
-              <PostProfile />
-              <div className="post__title">게시글 {index}</div>
-              <div className="post__text">text</div>
-              <PostUtils contentId="1" />
-            </Link>
-          </div>
-        ))}
+        {posts.length > 0 ? (
+          posts.map((post) => (
+            <div key={post.id} className="post__box">
+              <Link to={`/posts/${post.id}`}>
+                <PostProfile post={post} />
+                <div className="post__title">{post.title}</div>
+                <div className="post__text">{post.summary}</div>
+              </Link>
+              {user?.email === post.email && (
+                <PostUtils post={post} mutate={mutate} />
+              )}
+            </div>
+          ))
+        ) : (
+          <div className="post__no-post">게시글이 없습니다.</div>
+        )}
       </section>
     </>
   );
