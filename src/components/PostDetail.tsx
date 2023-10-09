@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 import Profile from "./PostProfile";
 import PostUtilsBox from "./PostUtils";
 import { useParams } from "react-router-dom";
-import { Post } from "@/types/post.type";
+import { PostData } from "@/types/post.type";
 import Loader from "./Loader";
 import { getPost } from "@/firebase/api";
 
 const PostDetail: React.FC = () => {
   const params = useParams();
-  const [post, setPost] = useState<Post | null>(null);
+  const [post, setPost] = useState<PostData | null>(null);
 
   useEffect(() => {
     if (params.id) {

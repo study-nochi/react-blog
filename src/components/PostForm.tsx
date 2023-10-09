@@ -1,9 +1,15 @@
 import AuthContext from "@/context/AuthContext";
 import { getPost } from "@/firebase/api";
 import { db } from "@/firebase/config";
-import { Post } from "@/types/post.type";
+import { PostProps } from "@/types/post.type";
 import { FirebaseError } from "firebase/app";
-import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
+import {
+  Timestamp,
+  addDoc,
+  collection,
+  doc,
+  updateDoc,
+} from "firebase/firestore";
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -21,7 +27,7 @@ const PostForm: React.FC = () => {
   const [title, setTitle] = useState("");
   const [summary, setSummary] = useState("");
   const [content, setContent] = useState("");
-  const [post, setPost] = useState<Post | null>(null);
+  const [post, setPost] = useState<PostProps | null>(null);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -33,7 +39,7 @@ const PostForm: React.FC = () => {
           title,
           summary,
           content,
-          updatedAt: new Date()?.toLocaleDateString(),
+          updatedAt: Timestamp.now().toDate(),
           uid: user?.uid,
         });
         toast.success("게시글을 수정하였습니다.");
@@ -45,7 +51,7 @@ const PostForm: React.FC = () => {
         title,
         summary,
         content,
-        createdAt: new Date()?.toLocaleDateString(),
+        createdAt: Timestamp.now().toDate(),
         email: user?.email,
       });
       toast.success("게시글을 생성했습니다.");
@@ -79,8 +85,11 @@ const PostForm: React.FC = () => {
     if (params?.id) {
       getPost(params.id)
         .then((newPost) => {
-          setPost(newPost);
-
+          setPost({
+            ...newPost,
+            createdAt: newPost.createdAt.toDate(),
+            updatedAt: newPost.updatedAt?.toDate(),
+          });
           setTitle(newPost.title);
           setSummary(newPost.summary);
           setContent(newPost.content);
@@ -126,7 +135,11 @@ const PostForm: React.FC = () => {
         />
       </div>
       <div className="form__block">
-        <input type="submit" value={post ? "수정" : "제출"} className="form__button--submit" />
+        <input
+          type="submit"
+          value={post ? "수정" : "제출"}
+          className="form__button--submit"
+        />
       </div>
     </form>
   );

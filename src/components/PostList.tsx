@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import PostProfile from "./PostProfile";
 import PostUtils from "./PostUtils";
 import { Link } from "react-router-dom";
-import { Post } from "@/types/post.type";
+import { PostData } from "@/types/post.type";
 import AuthContext from "@/context/AuthContext";
 import { getPostList } from "@/firebase/api";
 import { FirebaseError } from "firebase/app";
@@ -19,7 +19,7 @@ enum TabType {
 
 const PostList: React.FC<PostListProps> = ({ hasNavigation = true }) => {
   const [activeTab, setActiveTab] = useState(TabType.ALL);
-  const [posts, setPosts] = useState<Post[]>([]);
+  const [posts, setPosts] = useState<PostData[]>([]);
   const { user } = useContext(AuthContext);
 
   const handleClickTab = (tab: TabType) => {

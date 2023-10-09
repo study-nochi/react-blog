@@ -1,12 +1,12 @@
 import { db } from "@/firebase/config";
-import { Post } from "@/types/post.type";
+import { PostData } from "@/types/post.type";
 import { deleteDoc, doc } from "firebase/firestore";
 import React from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
 interface PostUtilsProps {
-  post: Post;
+  post: PostData;
   mutate?: () => void;
 }
 
