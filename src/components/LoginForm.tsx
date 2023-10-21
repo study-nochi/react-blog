@@ -14,7 +14,7 @@ enum LoginInputType {
 
 const LoginForm: React.FC = () => {
   const navigate = useNavigate();
-  
+
   const [error, setError] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
