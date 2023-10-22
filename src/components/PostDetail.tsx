@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import { PostData } from "@/types/post.type";
 import Loader from "./Loader";
 import { getPost } from "@/firebase/api";
+import Comments from "./Comments";
 
 const PostDetail: React.FC = () => {
   const params = useParams();
@@ -21,12 +22,17 @@ const PostDetail: React.FC = () => {
   return (
     <div className="post__detail">
       {post ? (
-        <div className="post__box">
-          <div className="post__title">{post.title}</div>
-          <Profile post={post} />
-          <PostUtilsBox post={post} />
-          <div className="post__text post__text--pre-wrap">{post.content}</div>
-        </div>
+        <>
+          <div className="post__box">
+            <div className="post__title">{post.title}</div>
+            <Profile post={post} />
+            <PostUtilsBox post={post} />
+            <div className="post__text post__text--pre-wrap">
+              {post.content}
+            </div>
+          </div>
+          <Comments />
+        </>
       ) : (
         <Loader />
       )}
